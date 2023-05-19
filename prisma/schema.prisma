@@ -23,6 +23,8 @@ model Account {
   sessionState      String?
   user              User      @relation(fields: [userId], references: [id])
   userId            String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model Session {
@@ -31,6 +33,8 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id])
   userId       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Role {
@@ -51,9 +55,9 @@ model User {
   accounts  Account[]
   role      Role       @relation(fields: [roleId], references: [id])
   sessions  Session[]
+  roleId    String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  roleId    String
 }
 
 model Material {
@@ -62,9 +66,9 @@ model Material {
   price     Int
   user      User       @relation(fields: [userId], references: [id])
   movement  Movement[]
+  userId    String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  userId    String
 }
 
 model Movement {
@@ -73,8 +77,8 @@ model Movement {
   output     Boolean
   user       User     @relation(fields: [userId], references: [id])
   material   Material @relation(fields: [materialId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
   userId     String
   materialId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
