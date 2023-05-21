@@ -9,7 +9,11 @@ module.exports = {
     extend: {
       colors:{
         'gray':'#D7D7D7',
-        'gray-700':'#AFAFAF',
+        'gray-50':'#FAFAFA',
+        'gray-400':'#c2c2c2',
+        'gray-500': '#6B7280',
+        'gray-700':'#374151',
+        'gray-900':'#111827',
       }
     },
   },

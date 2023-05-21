@@ -14,10 +14,30 @@
   .debug {
     @apply border border-solid border-red-600
   }
+
+  .btn {
+    @apply bg-transparent hover:bg-gray-700 text-black text-[14px] py-[18px] px-[32.5px] border border-black;
+  }
 }
 
 @layer base {
   nav > ul > li {
     @apply bg-transparent hover:bg-gray-700 text-black text-[32px] py-4 pl-10 border border-black w-full;
+  }
+
+  table {
+    @apply w-full text-sm text-left text-black border;
+  }
+
+  thead {
+    @apply text-xs text-white uppercase bg-gray-500;
+  }
+
+  th, td {
+    @apply px-6 py-3;
+  }
+
+  tbody > tr:nth-child(2n){
+    @apply bg-gray;
   }
 }

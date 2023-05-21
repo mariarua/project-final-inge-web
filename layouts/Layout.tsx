@@ -8,7 +8,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => (
   <main className='flex h-screen w-full'>
     <Sidebar/>
-    <section className='flex h-full w-full'>{children}</section>
+    <section className='flex w-full flex-col'>{children}</section>
   </main>
 );
 
