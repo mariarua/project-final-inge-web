@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 export const Sidebar = () => (
-    <aside className='bg-gray w-[340px] h-screen'>
-      <div className='flex flex-col m-3 gap-20'>
-        <div className='flex flex-col items-center gap-1'>
+    <aside className='bg-gray w-[342px] h-screen'>
+      <div className='flex flex-col m-3 gap-14'>
+        <div className='flex flex-col items-center gap-1 mt-[30px]'>
             <Image
                 className='clip-circle'
                 src='/favicon.ico'
