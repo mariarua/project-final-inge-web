@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String    @id @default(cuid())
+  provider          String
+  providerAccountId String
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         DateTime?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionState      String?
+  user              User      @relation(fields: [userId], references: [id])
+  userId            String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Role {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  user      User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String?    @unique
+  image     String?
+  material  Material[]
+  movement  Movement[]
+  accounts  Account[]
+  role      Role       @relation(fields: [roleId], references: [id])
+  sessions  Session[]
+  roleId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Material {
+  id        String     @id @default(cuid())
+  name      String
+  price     Int
+  user      User       @relation(fields: [userId], references: [id])
+  movement  Movement[]
+  userId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Movement {
+  id         String   @id @default(cuid())
+  input      Boolean
+  output     Boolean
+  user       User     @relation(fields: [userId], references: [id])
+  material   Material @relation(fields: [materialId], references: [id])
+  userId     String
+  materialId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
