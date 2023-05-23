@@ -1,8 +1,7 @@
 import Layout from '@/layouts/Layout'
 import Head from 'next/head'
 
-export default function Home() {
-  return (
+const Home = () => (
     <>
       <Head>
         <title>Inventario</title>
@@ -20,4 +19,5 @@ export default function Home() {
       </Layout>
     </>
   )
-}
+
+export default Home
