@@ -10,54 +10,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Enum_RoleName {
+  ADMIN
+  USER
+}
+
 model Account {
-  id                String    @id @default(cuid())
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
   provider          String
   providerAccountId String
-  refreshToken      String?
-  accessToken       String?
-  expiresAt         DateTime?
-  tokenType         String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
   scope             String?
-  idToken           String?
-  sessionState      String?
-  user              User      @relation(fields: [userId], references: [id])
-  userId            String
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  id_token          String?
+  session_state     String?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
+  sessionToken String   @unique
   userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
 model Role {
-  id        String   @id @default(cuid())
-  name      String   @unique
+  id        String        @id @default(cuid())
+  name      Enum_RoleName
   user      User[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String?
-  email     String?    @unique
-  image     String?
-  material  Material[]
-  movement  Movement[]
-  accounts  Account[]
-  role      Role       @relation(fields: [roleId], references: [id])
-  sessions  Session[]
-  roleId    String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role?      @relation(fields: [roleId], references: [id])
+  roleId        String?
+  material      Material[]
+  movement      Movement[]
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }
 
 model Material {
