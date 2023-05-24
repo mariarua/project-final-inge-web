@@ -15,20 +15,37 @@ const resolvers: Resolver = {
   },
   Query: {
     users: async (parent, args, context) => await context.db.user.findMany(),
-    materials: async (parent, args, context) =>
+    materials: async (parent, args, context) => 
       await context.db.material.findMany(),
+      
     material: async (parent, args, context) =>
       await context.db.material.findUnique({where: {id: args.id}}),
   },
   Mutation: {
-    createMaterial: async (parent, args, context) =>
-      await context.db.material.create({
-        data: {
-          name: args.name,
-          price: args.price,
-          userId: args.userId,
-        },
-      }),
+    createMaterial: async (parent, args, context) => {
+      const { db, session } = context;      
+      if (!session){
+        throw new Error("Para hacer esto debes autenticarte");
+      }
+      
+      const user = await db.User.findUnique({
+        where: {email: session.user?.email},
+        include: {role: true}
+      })
+      const role = user.role.name
+      if (role == 'ADMIN'){
+        const newMaterial = await db.Material.create({
+          data: {
+            name: args.name,
+            price: args.price,
+            userId: user.id ,
+          }
+        })
+        throw new Error("Función solo disponible para administradores");
+      }
+      context.res.status(401).json({ message: "Unauthorized" });
+      return;
+    },
     updateMaterial: async (parent, args, context) =>
       await context.db.material.update({
         where: { id: args.id },

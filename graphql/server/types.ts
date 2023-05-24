@@ -53,7 +53,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createMaterial(name: String!, price: Int!, userId: ID!): Material!
+    createMaterial(name: String!, price: Int!): Material!
     updateMaterial(id: ID!, name: String!, price: Int!): Material!
     deleteMaterial(id: ID!): Material!
     createMovement(input: Int, output: Int, userId: String!, materialId: String!): Movement
