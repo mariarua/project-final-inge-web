@@ -83,8 +83,8 @@ model Material {
 
 model Movement {
   id         String   @id @default(cuid())
-  input      Boolean
-  output     Boolean
+  input      Int
+  output     Int
   user       User     @relation(fields: [userId], references: [id])
   material   Material @relation(fields: [materialId], references: [id])
   userId     String
