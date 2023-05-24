@@ -7,10 +7,18 @@ const resolvers: Resolver = {
         where: { id: parent.roleId },
       }),
   },
+  Material: {
+    movement: async (parent, args, context) =>
+      await context.db.Movement.findMany({
+        where: {id: parent.materialId}
+      })
+  },
   Query: {
     users: async (parent, args, context) => await context.db.user.findMany(),
     materials: async (parent, args, context) =>
       await context.db.material.findMany(),
+    material: async (parent, args, context) =>
+      await context.db.material.findUnique({where: {id: args.id}}),
   },
   Mutation: {
     createMaterial: async (parent, args, context) =>
@@ -32,6 +40,15 @@ const resolvers: Resolver = {
     deleteMaterial: async (parent, args, context) =>
       await context.db.material.delete({
         where: { id: args.id },
+      }),
+    createMovement: async (parent, args, context) =>
+      await context.db.Movement.create({
+        data: {
+          input: args.input,
+          output: args.output,
+          userId: args.userId,
+          materialId: args.materialId
+        },
       }),
   },
 };
