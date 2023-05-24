@@ -41,10 +41,9 @@ const resolvers: Resolver = {
             userId: user.id ,
           }
         })
-        throw new Error("Función solo disponible para administradores");
+        return newMaterial;
       }
-      context.res.status(401).json({ message: "Unauthorized" });
-      return;
+      throw new Error("Unauthorized");
     },
     updateMaterial: async (parent, args, context) =>
       await context.db.material.update({
