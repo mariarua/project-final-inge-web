@@ -17,7 +17,7 @@ const LoginBtn = () => {
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={() => signIn("auth0")}>Sign in</button>
     </>
   );
 };
