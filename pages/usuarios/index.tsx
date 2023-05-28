@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import Management from "@/components/management";
 import ModalUsers from "@/components/modals/ModalUsers";
 import { useState } from "react";
@@ -81,11 +83,22 @@ export const users = [
     role: "USER",
   },
 ];
-
+  
 const Users = () => {
+  const router = useRouter();
+  const { status } = useSession();
   const [openModalUsers, setOpenModalUsers] = useState<boolean>(false);
-  return(
-  <>
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
+  return (
+    <>
     <Management title="Gestión de usuarios">
       <>
         <div className="flex justify-end">
@@ -114,7 +127,9 @@ const Users = () => {
       </>
     </Management>
     <ModalUsers openModalUsers={openModalUsers} setOpenModalUsers={setOpenModalUsers}/>
-  </>);
+  </>
+  );
 };
 
+Users.requireAuth = true;
 export default Users;

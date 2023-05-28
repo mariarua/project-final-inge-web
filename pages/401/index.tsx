@@ -1,11 +1,11 @@
 import { signIn, useSession } from "next-auth/react";
 import Spinner from "@/components/spinner";
 
-const Login = () => {
+const Error401 = () => {
   const { status } = useSession();
 
   const redirectSession = () => {
-    signIn("auth0", { redirect: true, callbackUrl: "/usuarios" });
+    signIn("auth0", { redirect: true, callbackUrl: "/" });
   };
 
   if (status === "loading") {
@@ -22,7 +22,10 @@ const Login = () => {
         <h1 className="p-5 text-4xl font-thin uppercase tracking-[0.3em] w-[600px] text-center">
           Sistema de gestión de inventarios
         </h1>
-        <div className="mt-12">
+        <div className="">
+          <h6 className="mb-5 px-2 text-center text-lg uppercase font-thin tracking-[0.25em] text-red-600">
+            Página privada
+          </h6>
           <h3 className="p-2 uppercase tracking-[0.25em] text-center">
             Accede a tu cuenta
           </h3>
@@ -39,4 +42,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Error401;
