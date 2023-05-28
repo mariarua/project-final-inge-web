@@ -1,4 +1,6 @@
 import Management from "@/components/management";
+import ModalInventory from "@/components/modals/ModalInventory";
+import { useState } from "react";
 
 const materials = [
   { id: 0, name: "Hierro" },
@@ -29,48 +31,53 @@ const inventory = [
   { id: "QWERT11", createdAt: "11-05-2023", input: null, output: 10 },
 ];
 
-const Inventory = () => (
-  <>
-    <Management title="Gestión de inventarios" buttonName="Agregar movimiento">
-      {/* children[0] */}
-      <select name="select" id="select">
-        <option value="material_0" disabled selected>
-          Seleccionar material
-        </option>
-        {materials.map((material) => (
-          <option key={`material_${material.id}`} value={material.id}>
-            {material.name}
-          </option>
-        ))}
-      </select>
-      {/* children[1] */}
-      <table>
-        <thead>
-          <tr>
-            <th>Identificador</th>
-            <th>Fecha de creación</th>
-            <th>Entrada</th>
-            <th>Salida</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventory.map((movement) => (
-            <tr key={movement.id}>
-              <td>{movement.id}</td>
-              <td>{movement.createdAt}</td>
-              <td>{movement.input}</td>
-              <td>{movement.output}</td>
+const Inventory = () => {
+  
+  const [openModalInventory, setOpenModalInventory] = useState<boolean>(false);
+  return(<>
+    <Management title="Gestión de inventarios">
+      <>
+        <div className="flex justify-between">
+          <select name="select" id="select">
+            <option value="material_0" disabled selected>
+              Seleccionar material
+            </option>
+            {materials.map((material) => (
+              <option key={`material_${material.id}`} value={material.id}>
+                {material.name}
+              </option>
+            ))}
+          </select>
+          <button onClick={()=>(setOpenModalInventory(true))}>Agregar movimiento</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Identificador</th>
+              <th>Fecha de creación</th>
+              <th>Entrada</th>
+              <th>Salida</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      {/* children[2] */}
-      <div className="flex">
-        <div className="w-[83%]"></div>
-        <span>Saldo: 25</span>
-      </div>
+          </thead>
+          <tbody>
+            {inventory.map((movement) => (
+              <tr key={movement.id}>
+                <td>{movement.id}</td>
+                <td>{movement.createdAt}</td>
+                <td>{movement.input}</td>
+                <td>{movement.output}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="flex">
+          <div className="w-[83%]"></div>
+          <span>Saldo: 25</span>
+        </div>
+      </>
     </Management>
-  </>
-);
+    <ModalInventory openModalInventory={openModalInventory} setOpenModalInventory={setOpenModalInventory}/>
+  </>);
+};
 
 export default Inventory;

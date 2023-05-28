@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 export const Sidebar = () => (
-    <aside className='bg-gray w-[342px] h-screen'>
+    <aside className='bg-gray w-[342px] h-full'>
       <div className='flex flex-col m-3 gap-14'>
         <div className='flex flex-col items-center gap-1 mt-[30px]'>
             <Image
