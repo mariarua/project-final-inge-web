@@ -1,4 +1,5 @@
 import { Resolver } from "@/types";
+import { GraphQLError } from "graphql/error";
 
 const resolvers: Resolver = {
   User: {
@@ -27,7 +28,6 @@ const resolvers: Resolver = {
       })
       
       const role = user.role.name
-      console.log(role)
       if (role=='ADMIN'){
         return await context.db.user.findMany()
       }
@@ -36,27 +36,27 @@ const resolvers: Resolver = {
     
     },
 
-    materials: async (parent, args, context) => 
-      await context.db.material.findMany(),
+    materials: async (parent, args, context) => {
+      const{db , session} = context;
+      if (!session) {
+        return null
+      }
+      return (await db.material.findMany())
+    },
       
-    material: async (parent, args, context) =>
-      await context.db.material.findUnique({where: {id: args.id}}),
-
-     
+    material: async (parent, args, context) => {
+      const{db , session} = context;
+      if (!session) {
+        return null
+      }
+      return (await db.material.findUnique({where: {id: args.id}}))
+    },
     user: async (parent, args, context) => {
       const{db , session} = context;
       if (!session){
         return null
       }
-
-      const userr = await db.User.findUnique({where: {id: args.id},
-        include:{role:true}})
-      const role = userr.role.name
-      if (role=='ADMIN'){
-      return userr
-      }
-
-
+      return (await db.User.findUnique({where: {id: args.id}, include:{role:true}}))
     }
   },
   Mutation: {
@@ -64,7 +64,12 @@ const resolvers: Resolver = {
     updateRole: async (parent, args, context) =>{
       const {db , session} = context;
       if (!session){
-        throw new Error("debes estar logeado")
+        throw new GraphQLError("User is not authenticated", {
+          extensions:{
+            code: 'Unauthorized',
+            http: {status: 401}
+          }
+        });
       }
       const user = await db.User.findUnique({
         where: {email: session.user?.email},
@@ -72,33 +77,38 @@ const resolvers: Resolver = {
       })
       const role = user.role.name
       if (role =="ADMIN"){
-        const a =await context.db.user.update({
+        const userUpdated =await context.db.user.update({
           where:{id: args.id},
           data:{
             roleId: args.roleId
           }
         }
         )
-        return a
+        return userUpdated
       }
-
-
-      
-      
-    }
-    
-    ,
+      throw new GraphQLError("Unauthorized",{
+        extensions:{
+          code: 'Unauthorized',
+          http: {status: 401}
+        }
+      });
+    },
     createMaterial: async (parent, args, context) => {
       const { db, session } = context;      
       if (!session){
-        throw new Error("Para hacer esto debes autenticarte");
+        throw new GraphQLError("User is not authenticated", {
+          extensions:{
+            code: 'Unauthorized',
+            http: {status: 401}
+          }
+        });
       }
-      
       const user = await db.User.findUnique({
         where: {email: session.user?.email},
         include: {role: true}
       })
       const role = user.role.name
+
       if (role == 'ADMIN'){
         const newMaterial = await db.Material.create({
           data: {
@@ -109,7 +119,12 @@ const resolvers: Resolver = {
         })
         return newMaterial;
       }
-      throw new Error("Unauthorized");
+      throw new GraphQLError("Unauthorized",{
+        extensions:{
+          code: 'Unauthorized',
+          http: {status: 401}
+        }
+      });
     },
     updateMaterial: async (parent, args, context) =>
       await context.db.material.update({
@@ -123,15 +138,30 @@ const resolvers: Resolver = {
       await context.db.material.delete({
         where: { id: args.id },
       }),
-    createMovement: async (parent, args, context) =>
-      await context.db.Movement.create({
+    createMovement: async (parent, args, context) => {
+      const {db , session} = context;
+      if (!session){
+        throw new GraphQLError("User is not authenticated", {
+          extensions:{
+            code: 'Unauthorized',
+            http: {status: 401}
+          }
+        });
+      }
+      const user = await db.User.findUnique({
+        where: {email: session.user?.email},
+      })
+      const newMovement = await db.Movement.create({
         data: {
           input: args.input,
           output: args.output,
-          userId: args.userId,
+          userId: user.id,
           materialId: args.materialId
         },
-      }),
+      })
+      console.log(newMovement)
+      return newMovement
+    },
   },
 };
 

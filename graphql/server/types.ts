@@ -44,8 +44,6 @@ export const typeDefs = gql`
   type Query {
     materials: [Material]
     material(id: ID!): Material
-    movements: [Movement]
-    movement(id: ID!): Movement
     users: [User]
     user(id: ID!): User
     roles: [Role]
@@ -56,7 +54,7 @@ export const typeDefs = gql`
     createMaterial(name: String!, price: Int!): Material!
     updateMaterial(id: ID!, name: String!, price: Int!): Material!
     deleteMaterial(id: ID!): Material!
-    createMovement(input: Int, output: Int, userId: String!, materialId: String!): Movement
+    createMovement(input: Int, output: Int, materialId: String!): Movement
     updateRole(id: ID!, roleId:String!): User!
   }
 `;
