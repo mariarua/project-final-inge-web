@@ -1,17 +1,21 @@
-import React from "react";
-import { useSession, signIn } from "next-auth/react";
-import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+import Spinner from "@/components/spinner";
 
-const Login = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
+const Error401 = () => {
+  const { status } = useSession();
+
   const redirectSession = () => {
-    if (session) {
-      router.push("/");
-    } else {
-      signIn("auth0");
-    }
+    signIn("auth0", { redirect: true, callbackUrl: "/" });
   };
+
+  if (status === "loading") {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
+  }
+
   return (
     <div className="w-max-[800px] flex h-screen items-center justify-center">
       <div className="flex flex-col items-center justify-center rounded-lg border-[1px] border-solid border-black">
@@ -38,4 +42,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Error401;
