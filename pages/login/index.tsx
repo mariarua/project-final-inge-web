@@ -1,9 +1,20 @@
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import Spinner from "@/components/spinner";
 
 const Login = () => {
+  const { status } = useSession();
+
   const redirectSession = () => {
-    signIn("auth0", { redirect: true, callbackUrl: "/" });
+    signIn("auth0", { redirect: true, callbackUrl: "/usuarios" });
   };
+
+  if (status === "loading") {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
+  }
 
   return (
     <div className="w-max-[800px] flex h-screen items-center justify-center">
