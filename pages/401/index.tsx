@@ -5,7 +5,7 @@ const Error401 = () => {
   const { status } = useSession();
 
   const redirectSession = () => {
-    signIn("auth0", { redirect: true, callbackUrl: "/" });
+    signIn("auth0", { redirect: true, callbackUrl: "/usuarios" });
   };
 
   if (status === "loading") {
