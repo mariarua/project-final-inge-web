@@ -1,25 +1,39 @@
-import Image from 'next/image';
+import Image from "next/image";
+import { IoIosLogOut } from "react-icons/io";
+import { useSession, signOut } from "next-auth/react";
 
-export const Sidebar = () => (
-    <aside className='bg-gray w-[342px] h-screen'>
-      <div className='flex flex-col m-3 gap-14'>
-        <div className='flex flex-col items-center gap-1 mt-[30px]'>
-            <Image
-                className='clip-circle'
-                src='/favicon.ico'
-                alt='Picture of the author'
-                width={160}
-                height={160}
-            />
-            <span className='text-white text-[24px]'>Nombre del usuario</span>
+export const Sidebar = () => {
+  const { data } = useSession();
+  return (
+    <div className="flex w-full drop-shadow-sm">
+      <aside className="bg-gray min-h-screen w-5/12">
+        <div className="flex flex-col items-center gap-1 my-8">
+          <Image
+            className="clip-circle rounded-full"
+            src={data?.user?.image || "/blank-profile-picture.jpg"}
+            alt="Picture of the author"
+            width={90}
+            height={90}
+          />
+          <span className="font-thin text-gray-800 tracking-[0.3em] pt-2">
+            {data?.user?.name}
+          </span>
+          <IoIosLogOut onClick={() => signOut()} className="mb-2" />
         </div>
         <nav>
-            <ul className='flex flex-col gap-2'>
-                <li>Inventarios</li>
-                <li>Materiales</li>
-                <li>Usuario</li>
-            </ul>
+          <ul className="flex flex-col gap-2 text-xl font-thin tracking-[0.3em] ">
+            <li className="border-0 border-transparent text-gray-800">
+              Inventarios
+            </li>
+            <li className="border-0 border-transparent text-gray-800">
+              Materiales
+            </li>
+            <li className="border-0 border-transparent text-gray-800">
+              Usuario
+            </li>
+          </ul>
         </nav>
-      </div>
-    </aside>
+      </aside>
+    </div>
   );
+};

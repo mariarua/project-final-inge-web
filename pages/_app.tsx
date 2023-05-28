@@ -1,10 +1,23 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
+import { AuthGuard } from "@/components/authGuard";
 
-const App = ({ Component, pageProps }: AppProps) => (
+interface App extends AppProps {
+  Component: AppProps["Component"] & {
+    requireAuth?: boolean;
+  };
+}
+
+const App = ({ Component, pageProps }: App) => (
   <SessionProvider session={pageProps.session}>
-    <Component {...pageProps} />
+    {Component.requireAuth ? (
+      <AuthGuard>
+        <Component {...pageProps} />
+      </AuthGuard>
+    ) : (
+      <Component {...pageProps} />
+    )}
   </SessionProvider>
 );
 

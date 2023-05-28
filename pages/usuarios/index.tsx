@@ -1,7 +1,20 @@
 import Layout from "@/layouts/Layout";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
-export default function Materials() {
+const Materials = () => {
+  const router = useRouter();
+  const { status } = useSession();
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
   return (
     <>
       <Head>
@@ -15,8 +28,8 @@ export default function Materials() {
           <span className="text-5xl">Gestión de materiales</span>
           <div className="w-full">
             <div className="flex flex-col gap-[40px]">
-              <div className='flex justify-end'>
-                <span className='btn'>Agregar material</span>
+              <div className="flex justify-end">
+                <span className="btn">Agregar material</span>
               </div>
               <table className="table-auto">
                 <thead>
@@ -66,4 +79,7 @@ export default function Materials() {
       </Layout>
     </>
   );
-}
+};
+
+Materials.requireAuth = true;
+export default Materials;

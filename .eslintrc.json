@@ -10,6 +10,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": ["next.config.js"],
   "rules": {
     "react/no-array-index-key": "warn",
     "jsx-a11y/media-has-caption": "off",
