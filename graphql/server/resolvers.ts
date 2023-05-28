@@ -14,14 +14,80 @@ const resolvers: Resolver = {
       })
   },
   Query: {
-    users: async (parent, args, context) => await context.db.user.findMany(),
+
+    users: async (parent, args, context) => {
+      const{db , session} = context;
+      if (!session) {
+        return null
+      }
+      
+      const user = await db.User.findUnique({
+        where: {email: session.user?.email}, 
+        include: {role:true}
+      })
+      
+      const role = user.role.name
+      console.log(role)
+      if (role=='ADMIN'){
+        return await context.db.user.findMany()
+      }
+      else {return null}
+      
+    
+    },
+
     materials: async (parent, args, context) => 
       await context.db.material.findMany(),
       
     material: async (parent, args, context) =>
       await context.db.material.findUnique({where: {id: args.id}}),
+
+     
+    user: async (parent, args, context) => {
+      const{db , session} = context;
+      if (!session){
+        return null
+      }
+
+      const userr = await db.User.findUnique({where: {id: args.id},
+        include:{role:true}})
+      const role = userr.role.name
+      if (role=='ADMIN'){
+      return userr
+      }
+
+
+    }
   },
   Mutation: {
+     /*--------------------------------------------------------*/
+    updateRole: async (parent, args, context) =>{
+      const {db , session} = context;
+      if (!session){
+        throw new Error("debes estar logeado")
+      }
+      const user = await db.User.findUnique({
+        where: {email: session.user?.email},
+        include: {role:true}
+      })
+      const role = user.role.name
+      if (role =="ADMIN"){
+        const a =await context.db.user.update({
+          where:{id: args.id},
+          data:{
+            roleId: args.roleId
+          }
+        }
+        )
+        return a
+      }
+
+
+      
+      
+    }
+    
+    ,
     createMaterial: async (parent, args, context) => {
       const { db, session } = context;      
       if (!session){

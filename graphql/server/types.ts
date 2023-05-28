@@ -57,5 +57,6 @@ export const typeDefs = gql`
     updateMaterial(id: ID!, name: String!, price: Int!): Material!
     deleteMaterial(id: ID!): Material!
     createMovement(input: Int, output: Int, userId: String!, materialId: String!): Movement
+    updateRole(id: ID!, roleId:String!): User!
   }
 `;
