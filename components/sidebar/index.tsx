@@ -2,6 +2,7 @@ import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
 import { useSession, signOut } from "next-auth/react";
 
+
 export const Sidebar = () => {
   const { data } = useSession();
   return (

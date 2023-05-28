@@ -1,11 +1,93 @@
-import Layout from "@/layouts/Layout";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Management from "@/components/management";
+import ModalUsers from "@/components/modals/ModalUsers";
+import { useState } from "react";
 
-const Materials = () => {
+export const users = [
+  {
+    id: 1,
+    createdAt: "01-05-2023",
+    name: "Ana",
+    email: "correo-1@yopmail.com",
+    role: "ADMIN",
+  },
+  {
+    id: 2,
+    createdAt: "02-05-2023",
+    name: "Maria",
+    email: "correo-2@yopmail.com",
+    role: "ADMIN",
+  },
+  {
+    id: 3,
+    createdAt: "03-05-2023",
+    name: "Santiago",
+    email: "correo-3@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 4,
+    createdAt: "04-05-2023",
+    name: "Tatiana",
+    email: "correo-4@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 5,
+    createdAt: "05-05-2023",
+    name: "Sofia",
+    email: "correo-5@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 6,
+    createdAt: "06-05-2023",
+    name: "Juan Manuel",
+    email: "correo-6@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 7,
+    createdAt: "07-05-2023",
+    name: "Daniel",
+    email: "correo-7@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 8,
+    createdAt: "08-05-2023",
+    name: "Kevin",
+    email: "correo-8@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 9,
+    createdAt: "09-05-2023",
+    name: "Estaban",
+    email: "correo-9@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 10,
+    createdAt: "10-05-2023",
+    name: "Alejandro",
+    email: "correo-10@yopmail.com",
+    role: "USER",
+  },
+  {
+    id: 11,
+    createdAt: "11-05-2023",
+    name: "Nik",
+    email: "correo-11@yopmail.com",
+    role: "USER",
+  },
+];
+  
+const Users = () => {
   const router = useRouter();
   const { status } = useSession();
+  const [openModalUsers, setOpenModalUsers] = useState<boolean>(false);
 
   if (status === "loading") {
     return <p>Loading...</p>;
@@ -17,69 +99,37 @@ const Materials = () => {
 
   return (
     <>
-      <Head>
-        <title>Materiales</title>
-        <meta name="description" content="Gestión de materiales" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Layout>
-        <div className="flex items-center flex-col px-[80px] pt-[48px] h-screen gap-[120px]">
-          <span className="text-5xl">Gestión de materiales</span>
-          <div className="w-full">
-            <div className="flex flex-col gap-[40px]">
-              <div className="flex justify-end">
-                <span className="btn">Agregar material</span>
-              </div>
-              <table className="table-auto">
-                <thead>
-                  <tr>
-                    <th>Identificador</th>
-                    <th>Fecha de creación</th>
-                    <th>Nombre</th>
-                    <th>Saldo</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Shining Star</td>
-                    <td>Malcolm Lockyer</td>
-                    <td>1961</td>
-                    <td>1961</td>
-                  </tr>
-                  <tr>
-                    <td>Witchy Woman</td>
-                    <td>The Eagles</td>
-                    <td>1972</td>
-                    <td>1972</td>
-                  </tr>
-                  <tr>
-                    <td>Shining Star</td>
-                    <td>Earth, Wind, and Fire</td>
-                    <td>1975</td>
-                    <td>1975</td>
-                  </tr>
-                  <tr>
-                    <td>Shining Star</td>
-                    <td>Malcolm Lockyer</td>
-                    <td>1961</td>
-                    <td>1961</td>
-                  </tr>
-                  <tr>
-                    <td>Shining Star</td>
-                    <td>Malcolm Lockyer</td>
-                    <td>1961</td>
-                    <td>1961</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+    <Management title="Gestión de usuarios">
+      <>
+        <div className="flex justify-end">
+          <button onClick={() => (setOpenModalUsers(true))}>Editar usuario</button>
         </div>
-      </Layout>
-    </>
+        <table className="table-auto">
+          <thead>
+            <tr>
+              <th>Identificador</th>
+              <th>Fecha de creación</th>
+              <th>Correo</th>
+              <th>Rol</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.createdAt}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    </Management>
+    <ModalUsers openModalUsers={openModalUsers} setOpenModalUsers={setOpenModalUsers}/>
+  </>
   );
 };
 
-Materials.requireAuth = true;
-export default Materials;
+Users.requireAuth = true;
+export default Users;

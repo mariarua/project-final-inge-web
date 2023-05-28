@@ -2,21 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-@layer utilities {  
-  .clip-circle{
+@layer utilities {
+  .clip-circle {
     clip-path: circle(200px at 50% 50%);
   }
+
+  select {
+    background-image: url(/arrow.svg); /*aquí deberás escribir la ruta de la imagen que utilizarás como flecha del desplegable*/
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    }
 }
 
 @layer components {
   .debug {
-    @apply border border-solid border-red-600
-  }
-
-  .btn {
-    @apply bg-transparent hover:bg-gray-400 text-black text-[14px] py-[18px] px-[32.5px] border border-black;
+    @apply border border-solid border-red-600;
   }
 }
 
@@ -24,6 +29,15 @@
   nav > ul > li {
     @apply bg-transparent hover:bg-gray-400 text-black text-[32px] py-4 pl-10 border border-black w-full;
   }
+
+  button {
+    @apply bg-transparent hover:bg-gray-400 text-black text-[14px] py-[18px] px-[32.5px] border border-black;
+  }
+
+  select{
+    @apply bg-transparent text-black text-[14px] py-[18px] px-[32.5px] border border-black;
+  }
+  
 
   table {
     @apply w-full text-sm text-left text-black border;
@@ -33,11 +47,27 @@
     @apply text-xs text-white uppercase bg-gray-500;
   }
 
-  th, td {
+  th,
+  td {
     @apply px-6 py-3;
   }
 
-  tbody > tr:nth-child(2n){
+  tbody > tr:nth-child(2n) {
     @apply bg-gray;
+  }
+
+  form{
+    @apply flex flex-col gap-3;
+  }
+
+  label {
+    @apply flex items-center gap-4 justify-between
+  }
+
+  label > span {
+    @apply text-lg;
+  }
+  input {
+    @apply bg-transparent text-black text-lg p-2 border border-black rounded-md;
   }
 }
