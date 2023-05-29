@@ -39,3 +39,7 @@ function ModalMaterials({
 }
 
 export default ModalMaterials;
+function createMaterial(arg0: { variables: { lot: any; bunches: any; collectionDate: any; }; refetchQueries: any[]; }) {
+  throw new Error("Function not implemented.");
+}
+

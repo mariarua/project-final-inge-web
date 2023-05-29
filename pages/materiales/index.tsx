@@ -1,24 +1,29 @@
 import Management from "@/components/management";
-import Modal from "@/components/modals/Modal";
 import ModalMaterials from "@/components/modals/ModalMaterials";
+import { GET_MATERIALS } from "@/graphql/client/materials";
+import { useQuery } from "@apollo/client";
 import { useState } from "react";
 
-const materials = [
-  { id: 1, createdAt: "01-05-2023", name: "Hierro", price: 10 },
-  { id: 2, createdAt: "02-05-2023", name: "Madera", price: 10 },
-  { id: 3, createdAt: "03-05-2023", name: "Tierra", price: 10 },
-  { id: 4, createdAt: "04-05-2023", name: "Oro", price: 10 },
-  { id: 5, createdAt: "05-05-2023", name: "Zinc", price: 10 },
-  { id: 6, createdAt: "06-05-2023", name: "Mercurio", price: 10 },
-  { id: 7, createdAt: "07-05-2023", name: "Agua", price: 10 },
-  { id: 8, createdAt: "08-05-2023", name: "Plata", price: 10 },
-  { id: 9, createdAt: "09-05-2023", name: "Yeso", price: 10 },
-  { id: 10, createdAt: "10-05-2023", name: "Carbón", price: 10 },
-  { id: 11, createdAt: "11-05-2023", name: "Aluminio", price: 10 },
-];
+interface Material{
+  id: string,
+  createdAt:{
+    year: string,
+    month: string,
+    day: string
+  },
+  name: string,
+  price: number,
+}
 
 const Materials = () => {
   const [openModalMaterials, setOpenModalMaterials] = useState<boolean>(false);
+  const { data, loading, error } = useQuery<{ materials: Material[] }>(GET_MATERIALS, {
+    fetchPolicy: 'cache-first',
+  });
+  
+  if (error) return <p>Error materials</p>;
+
+  if (loading) return <p>Loading...</p>;
   return (
     <>
       <Management title="Gestión de materiales">
@@ -36,10 +41,10 @@ const Materials = () => {
               </tr>
             </thead>
             <tbody>
-              {materials.map((material) => (
+              {data?.materials.map((material) => (
                 <tr key={material.id}>
                   <td>{material.id}</td>
-                  <td>{material.createdAt}</td>
+                  <td>{`${material.createdAt.year}-${material.createdAt.month}-${material.createdAt.day}`}</td>
                   <td>{material.name}</td>
                   <td>{material.price}</td>
                 </tr>
