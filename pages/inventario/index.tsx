@@ -1,5 +1,9 @@
 import Management from "@/components/management";
 import ModalMovement from "@/components/modals/ModalMovement";
+import { GET_NAME_MATERIALS } from "@/graphql/client/materials";
+import { useQuery } from "@apollo/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const materials = [
@@ -31,9 +35,32 @@ const movement = [
   { id: "QWERT11", createdAt: "11-05-2023", input: null, output: 10 },
 ];
 
+interface Material{
+  id: string,
+  name: string,
+}
+
 const Movement = () => {
   
   const [openModalMovement, setOpenModalMovement] = useState<boolean>(false);
+  const { data, loading, error } = useQuery<{ materials: Material[] }>(GET_NAME_MATERIALS, {
+    fetchPolicy: 'cache-first',
+  });
+  const router = useRouter();
+  const { status } = useSession();
+  
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
+  if (error) return <p>Error materials</p>;
+
+  if (loading) return <p>Loading...</p>;
+  
   return(<>
     <Management title="Gestión de inventarios">
       <>
@@ -42,7 +69,7 @@ const Movement = () => {
             <option value="material_0" disabled selected>
               Seleccionar material
             </option>
-            {materials.map((material) => (
+            {data?.materials.map((material) => (
               <option key={`material_${material.id}`} value={material.id}>
                 {material.name}
               </option>
