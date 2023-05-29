@@ -1,19 +1,19 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Modal from "./Modal";
 
-interface ModalInventoryProps {
-  openModalInventory: boolean;
-  setOpenModalInventory: Dispatch<SetStateAction<boolean>>;
+interface ModalMovementProps {
+  openModalMovement: boolean;
+  setOpenModalMovement: Dispatch<SetStateAction<boolean>>;
 }
 
-function ModalInventory({
-  openModalInventory,
-  setOpenModalInventory,
-}: ModalInventoryProps) {
+function ModalMovement({
+  openModalMovement,
+  setOpenModalMovement,
+}: ModalMovementProps) {
   return (
     <Modal
-      open={openModalInventory}
-      setOpen={setOpenModalInventory}
+      open={openModalMovement}
+      setOpen={setOpenModalMovement}
       modalTitle="Agregar un movimiento"
     >
       <>
@@ -29,7 +29,7 @@ function ModalInventory({
             </label>
           </form>
           <div className="flex justify-between">
-            <button onClick={() => setOpenModalInventory(false)}>Salir</button>
+            <button onClick={() => setOpenModalMovement(false)}>Salir</button>
             <button>Enviar</button>
           </div>
         </div>
@@ -38,4 +38,4 @@ function ModalInventory({
   );
 }
 
-export default ModalInventory;
+export default ModalMovement;

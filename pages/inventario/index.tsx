@@ -1,5 +1,5 @@
 import Management from "@/components/management";
-import ModalInventory from "@/components/modals/ModalInventory";
+import ModalMovement from "@/components/modals/ModalMovement";
 import { useState } from "react";
 
 const materials = [
@@ -17,7 +17,7 @@ const materials = [
   { id: 11, name: "Cobre" },
 ];
 
-const inventory = [
+const movement = [
   { id: "QWERT1", createdAt: "01-05-2023", input: 100, output: null },
   { id: "QWERT2", createdAt: "02-05-2023", input: null, output: 10 },
   { id: "QWERT3", createdAt: "03-05-2023", input: null, output: 10 },
@@ -31,9 +31,9 @@ const inventory = [
   { id: "QWERT11", createdAt: "11-05-2023", input: null, output: 10 },
 ];
 
-const Inventory = () => {
+const Movement = () => {
   
-  const [openModalInventory, setOpenModalInventory] = useState<boolean>(false);
+  const [openModalMovement, setOpenModalMovement] = useState<boolean>(false);
   return(<>
     <Management title="Gestión de inventarios">
       <>
@@ -48,7 +48,7 @@ const Inventory = () => {
               </option>
             ))}
           </select>
-          <button onClick={()=>(setOpenModalInventory(true))}>Agregar movimiento</button>
+          <button onClick={()=>(setOpenModalMovement(true))}>Agregar movimiento</button>
         </div>
         <table>
           <thead>
@@ -60,7 +60,7 @@ const Inventory = () => {
             </tr>
           </thead>
           <tbody>
-            {inventory.map((movement) => (
+            {movement.map((movement) => (
               <tr key={movement.id}>
                 <td>{movement.id}</td>
                 <td>{movement.createdAt}</td>
@@ -76,8 +76,8 @@ const Inventory = () => {
         </div>
       </>
     </Management>
-    <ModalInventory openModalInventory={openModalInventory} setOpenModalInventory={setOpenModalInventory}/>
+    <ModalMovement openModalMovement={openModalMovement} setOpenModalMovement={setOpenModalMovement}/>
   </>);
 };
 
-export default Inventory;
+export default Movement;
