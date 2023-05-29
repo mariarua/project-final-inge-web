@@ -7,6 +7,11 @@ const resolvers: Resolver = {
       await context.db.role.findUnique({
         where: { id: parent.roleId },
       }),
+      createdAt: async (parent, args, context) => {
+        console.log(parent)
+        const date = new Date(parent.createdAt);
+        return ({year: date.getFullYear(), month:date.getMonth(), day:date.getDay()})
+      }
   },
   Material: {
     movement: async (parent, args, context) =>
@@ -57,6 +62,13 @@ const resolvers: Resolver = {
         return null
       }
       return (await db.User.findUnique({where: {id: args.id}, include:{role:true}}))
+    },
+    roles:async (parent, args, context) => {
+      const{db , session} = context;
+      if (!session) {
+        return null
+      }
+      return (await db.role.findMany())
     }
   },
   Mutation: {

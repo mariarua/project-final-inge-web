@@ -4,6 +4,12 @@ export const typeDefs = gql`
 
   scalar DateTime
 
+  type Date{
+    year: String
+    month:String
+    day: String
+  }
+
   type Material {
     id: ID!
     name: String!
@@ -33,6 +39,7 @@ export const typeDefs = gql`
     roleId: ID!
     material: [Material]
     movement: [Movement]
+    createdAt: Date
   }
 
   type Role {
