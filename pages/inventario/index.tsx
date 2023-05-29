@@ -1,5 +1,7 @@
 import Management from "@/components/management";
 import ModalMovement from "@/components/modals/ModalMovement";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const materials = [
@@ -34,6 +36,16 @@ const movement = [
 const Movement = () => {
   
   const [openModalMovement, setOpenModalMovement] = useState<boolean>(false);
+  const router = useRouter();
+  const { status } = useSession();
+  
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
   return(<>
     <Management title="Gestión de inventarios">
       <>
@@ -80,4 +92,5 @@ const Movement = () => {
   </>);
 };
 
+Movement.requireAuth = true;
 export default Movement;
