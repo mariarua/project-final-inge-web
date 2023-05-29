@@ -107,4 +107,5 @@ const Movement = () => {
   </>);
 };
 
+Movement.requireAuth = true;
 export default Movement;

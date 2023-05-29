@@ -2,6 +2,8 @@ import Management from "@/components/management";
 import ModalMaterials from "@/components/modals/ModalMaterials";
 import { GET_MATERIALS } from "@/graphql/client/materials";
 import { useQuery } from "@apollo/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface Material{
@@ -20,7 +22,17 @@ const Materials = () => {
   const { data, loading, error } = useQuery<{ materials: Material[] }>(GET_MATERIALS, {
     fetchPolicy: 'cache-first',
   });
-  
+  const router = useRouter();
+  const { status } = useSession();
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
   if (error) return <p>Error materials</p>;
 
   if (loading) return <p>Loading...</p>;
@@ -58,4 +70,5 @@ const Materials = () => {
   );
 };
 
+Materials.requireAuth = true;
 export default Materials;
