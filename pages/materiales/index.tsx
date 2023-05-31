@@ -14,7 +14,7 @@ const Materials = () => {
   const { data: materialsData, loading: materialsLoading } = useQuery<{
     materials: Material[];
   }>(GET_MATERIALS, {
-    fetchPolicy: "cache-first",
+    fetchPolicy: "network-only",
   });
 
   return (
