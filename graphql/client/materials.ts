@@ -4,24 +4,21 @@ const GET_MATERIALS = gql`
   query Materials {
     materials {
       id
-      createdAt {
-        day
-        month
-        year
-      }
+      createdAt
       name
       price
     }
   }
 `;
 
-const GET_NAME_MATERIALS = gql`
+const GET_MATERIALS_LIST = gql`
   query Materials {
     materials {
       id
       name
+      price
     }
   }
 `;
 
-export { GET_MATERIALS, GET_NAME_MATERIALS};
+export { GET_MATERIALS, GET_MATERIALS_LIST };

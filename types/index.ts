@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth/core/types";
-import { PrismaClient} from "@prisma/client";
+import { PrismaClient, User, Role, Enum_RoleName } from "@prisma/client";
 
 export interface Context {
   db: PrismaClient;
@@ -19,3 +19,9 @@ export interface Resolver {
   Mutation: ResolverFunction;
   [key: string]: ResolverFunction;
 }
+
+export interface ExtendedUser extends User {
+  role: Role;
+}
+
+export type Roles = Enum_RoleName[];

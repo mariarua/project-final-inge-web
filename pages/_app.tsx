@@ -3,10 +3,12 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { AuthGuard } from "@/components/authGuard";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { UserContextProvider } from "@/context/UserContext";
 
 interface App extends AppProps {
   Component: AppProps["Component"] & {
     requireAuth?: boolean;
+    roles?: string[];
   };
 }
 
@@ -15,13 +17,16 @@ const App = ({ Component, pageProps }: App) => {
     uri: "/api/graphql",
     cache: new InMemoryCache(),
   });
+
   return (
     <SessionProvider session={pageProps.session}>
       <ApolloProvider client={client}>
         {Component.requireAuth ? (
-          <AuthGuard>
-            <Component {...pageProps} />
-          </AuthGuard>
+          <UserContextProvider>
+            <AuthGuard roles={Component.roles}>
+              <Component {...pageProps} />
+            </AuthGuard>
+          </UserContextProvider>
         ) : (
           <Component {...pageProps} />
         )}
