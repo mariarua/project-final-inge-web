@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
 import { useSession, signOut } from "next-auth/react";
-
+import PrivateComponent from "../privateComponent";
 
 export const Sidebar = () => {
   const { data } = useSession();
-  console.log(data);
+
   return (
     <div className="flex bg-gray w-5/12 min-h-screen">
       <aside className="w-full shadow-sm shadow-gray-600">
@@ -31,9 +31,11 @@ export const Sidebar = () => {
               <li className="border-0 border-transparent text-gray-800 cursor-pointer">
                 Materiales
               </li>
-              <li className="border-0 border-transparent text-gray-800 cursor-pointer">
-                Usuario
-              </li>
+              <PrivateComponent roles={["ADMIN"]}>
+                <li className="border-0 border-transparent text-gray-800 cursor-pointer">
+                  Usuario
+                </li>
+              </PrivateComponent>
             </ul>
           </nav>
         </div>
