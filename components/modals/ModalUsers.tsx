@@ -1,21 +1,34 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Modal from "./Modal";
-import { users } from "@/pages/usuarios";
+import { Role, User } from "@prisma/client";
+import { useQuery } from "@apollo/client";
+import { GET_EMAIL_USERS } from "@/graphql/client/users";
+import { GET_ROLES } from "@/graphql/client/roles";
 
 interface ModalUsersProps {
   openModalUsers: boolean;
   setOpenModalUsers: Dispatch<SetStateAction<boolean>>;
 }
 
-const roles = [
-  {id:0, name:"ADMIN"},
-  {id:1, name:"USER"}
-];
-
 function ModalUsers({
   openModalUsers,
   setOpenModalUsers,
 }: ModalUsersProps) {
+
+  const { data, loading, error } = useQuery<{ users: User[] }>(GET_EMAIL_USERS, {
+    fetchPolicy: 'cache-first',
+  });
+  const { data: dataRole, loading: loadingRole, error: errorRole } = useQuery<{ roles: Role[] }>(GET_ROLES, {
+    fetchPolicy: 'cache-first',
+  });
+  
+  if (error) return <p>Error Modal</p>;
+
+  if (loading) return <p>Loading...</p>;
+    
+  if (errorRole) return <p>Error Role</p>;
+
+  if (loadingRole) return <p>Loading...</p>;
   return (
     <Modal
       open={openModalUsers}
@@ -29,9 +42,9 @@ function ModalUsers({
             <option value="usuario_0" disabled selected>
               Seleccionar usuario
             </option>
-            {users.map((user) => (
+            {data?.users.map((user) => (
               <option key={`user_${user.id}`} value={user.id}>
-                {user.name}
+                {user.email}
               </option>
             ))}
           </select>
@@ -39,7 +52,7 @@ function ModalUsers({
             <option value="material_0" disabled selected>
               Seleccionar rol
             </option>
-            {roles.map((role) => (
+            {dataRole?.roles.map((role) => (
               <option key={`role_${role.id}`} value={role.id}>
                 {role.name}
               </option>

@@ -1,23 +1,12 @@
 import Management from "@/components/management";
-import ModalInventory from "@/components/modals/ModalInventory";
+import ModalMovement from "@/components/modals/ModalMovement";
+import { GET_NAME_MATERIALS } from "@/graphql/client/materials";
+import { useQuery } from "@apollo/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
-const materials = [
-  { id: 0, name: "Hierro" },
-  { id: 1, name: "Madera" },
-  { id: 2, name: "Tierra" },
-  { id: 3, name: "Oro" },
-  { id: 4, name: "Zinc" },
-  { id: 5, name: "Mercurio" },
-  { id: 6, name: "Agua" },
-  { id: 7, name: "Plata" },
-  { id: 8, name: "Yeso" },
-  { id: 9, name: "Carbón" },
-  { id: 10, name: "Aluminio" },
-  { id: 11, name: "Cobre" },
-];
-
-const inventory = [
+const movement = [
   { id: "QWERT1", createdAt: "01-05-2023", input: 100, output: null },
   { id: "QWERT2", createdAt: "02-05-2023", input: null, output: 10 },
   { id: "QWERT3", createdAt: "03-05-2023", input: null, output: 10 },
@@ -31,9 +20,32 @@ const inventory = [
   { id: "QWERT11", createdAt: "11-05-2023", input: null, output: 10 },
 ];
 
-const Inventory = () => {
+interface Material{
+  id: string,
+  name: string,
+}
+
+const Movement = () => {
   
-  const [openModalInventory, setOpenModalInventory] = useState<boolean>(false);
+  const [openModalMovement, setOpenModalMovement] = useState<boolean>(false);
+  const { data, loading, error } = useQuery<{ materials: Material[] }>(GET_NAME_MATERIALS, {
+    fetchPolicy: 'cache-first',
+  });
+  const router = useRouter();
+  const { status } = useSession();
+  
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
+  if (error) return <p>Error materials</p>;
+
+  if (loading) return <p>Loading...</p>;
+  
   return(<>
     <Management title="Gestión de inventarios">
       <>
@@ -42,13 +54,13 @@ const Inventory = () => {
             <option value="material_0" disabled selected>
               Seleccionar material
             </option>
-            {materials.map((material) => (
+            {data?.materials.map((material) => (
               <option key={`material_${material.id}`} value={material.id}>
                 {material.name}
               </option>
             ))}
           </select>
-          <button onClick={()=>(setOpenModalInventory(true))}>Agregar movimiento</button>
+          <button onClick={()=>(setOpenModalMovement(true))}>Agregar movimiento</button>
         </div>
         <table>
           <thead>
@@ -60,7 +72,7 @@ const Inventory = () => {
             </tr>
           </thead>
           <tbody>
-            {inventory.map((movement) => (
+            {movement.map((movement) => (
               <tr key={movement.id}>
                 <td>{movement.id}</td>
                 <td>{movement.createdAt}</td>
@@ -76,8 +88,9 @@ const Inventory = () => {
         </div>
       </>
     </Management>
-    <ModalInventory openModalInventory={openModalInventory} setOpenModalInventory={setOpenModalInventory}/>
+    <ModalMovement openModalMovement={openModalMovement} setOpenModalMovement={setOpenModalMovement}/>
   </>);
 };
 
-export default Inventory;
+Movement.requireAuth = true;
+export default Movement;

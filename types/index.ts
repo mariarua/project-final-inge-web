@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth/core/types";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient} from "@prisma/client";
 
 export interface Context {
   db: PrismaClient;
