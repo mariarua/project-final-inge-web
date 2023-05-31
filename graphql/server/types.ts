@@ -53,6 +53,7 @@ export const typeDefs = gql`
     material(id: ID!): Material
     users: [User]
     user(id: ID!): User
+    userByEmail(email: String!): User
     roles: [Role]
     role(id: ID!): Role
   }

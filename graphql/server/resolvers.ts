@@ -75,6 +75,16 @@ const resolvers: Resolver = {
         include: { role: true },
       });
     },
+    userByEmail: async (parent, args, context) => {
+      const { db, session } = context;
+      if (!session) {
+        return null;
+      }
+      return await db.user.findUnique({
+        where: { email: args.email },
+        include: { role: true },
+      });
+    },
     roles: async (parent, args, context) => {
       const { db, session } = context;
       if (!session) {

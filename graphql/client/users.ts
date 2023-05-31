@@ -5,7 +5,7 @@ const GET_USERS = gql`
     users {
       name
       id
-      createdAt{
+      createdAt {
         day
         month
         year
@@ -26,5 +26,16 @@ const GET_EMAIL_USERS = gql`
   }
 `;
 
+const GET_USER_BY_EMAIL = gql`
+  query Users($email: String!) {
+    userByEmail(email: $email) {
+      id
+      email
+      role {
+        name
+      }
+    }
+  }
+`;
 
-export { GET_USERS , GET_EMAIL_USERS};
+export { GET_USERS, GET_EMAIL_USERS, GET_USER_BY_EMAIL };
