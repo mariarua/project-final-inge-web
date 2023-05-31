@@ -21,4 +21,14 @@ const GET_MATERIALS_LIST = gql`
   }
 `;
 
-export { GET_MATERIALS, GET_MATERIALS_LIST };
+const CREATE_MATERIAL = gql`
+  mutation CreateMaterial($name: String!, $price: Int!) {
+    createMaterial(name: $name, price: $price) {
+      id
+      name
+      price
+    }
+  }
+`;
+
+export { GET_MATERIALS, GET_MATERIALS_LIST, CREATE_MATERIAL };
