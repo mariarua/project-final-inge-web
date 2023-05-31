@@ -1,19 +1,18 @@
 import Layout from "@/layouts/Layout";
+import { ReactNode } from "react";
 
-interface ManagementProps{
-    title: string,
-    children: JSX.Element
+interface ManagementProps {
+  title: string;
+  children: ReactNode;
 }
 
-const Management = ({title, children}:ManagementProps) => (
-  <>    
+const Management = ({ title, children }: ManagementProps) => (
+  <>
     <Layout title={title}>
       <div className="flex items-center flex-col px-[80px] pt-[48px] h-screen gap-[50px]">
         <span className="text-5xl">{title}</span>
         <div className="w-full">
-          <div className="flex flex-col gap-[40px]">
-            {children}
-          </div>
+          <div className="flex flex-col gap-[40px]">{children}</div>
         </div>
       </div>
     </Layout>
