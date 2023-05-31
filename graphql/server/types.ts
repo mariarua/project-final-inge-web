@@ -3,12 +3,6 @@ import { gql } from "graphql-tag";
 export const typeDefs = gql`
   scalar DateTime
 
-  type Date {
-    year: String
-    month: String
-    day: String
-  }
-
   type Material {
     id: ID!
     name: String!
@@ -16,7 +10,7 @@ export const typeDefs = gql`
     movement: [Movement]
     user: User!
     userId: ID!
-    createdAt: Date
+    createdAt: DateTime
   }
 
   type Movement {
@@ -27,7 +21,7 @@ export const typeDefs = gql`
     Material: Material!
     userId: ID!
     materialId: ID!
-    createdAt: Date
+    createdAt: DateTime
   }
 
   type User {
@@ -39,7 +33,7 @@ export const typeDefs = gql`
     roleId: ID!
     material: [Material]
     movement: [Movement]
-    createdAt: Date
+    createdAt: DateTime
   }
 
   type Role {
@@ -51,6 +45,7 @@ export const typeDefs = gql`
   type Query {
     materials: [Material]
     material(id: ID!): Material
+    movements(material: ID): [Movement]
     users: [User]
     user(id: ID!): User
     userByEmail(email: String!): User

@@ -5,11 +5,7 @@ const GET_USERS = gql`
     users {
       name
       id
-      createdAt {
-        day
-        month
-        year
-      }
+      createdAt
       email
       role {
         name
