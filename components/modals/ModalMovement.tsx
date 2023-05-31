@@ -6,36 +6,34 @@ interface ModalMovementProps {
   setOpenModalMovement: Dispatch<SetStateAction<boolean>>;
 }
 
-function ModalMovement({
+const ModalMovement = ({
   openModalMovement,
   setOpenModalMovement,
-}: ModalMovementProps) {
-  return (
-    <Modal
-      open={openModalMovement}
-      setOpen={setOpenModalMovement}
-      modalTitle="Agregar un movimiento"
-    >
-      <>
-        <div className="flex flex-col gap-5">
-          <form action="">
-            <label htmlFor="input">
-              <span>Input:</span>
-              <input type="text" name="input" id="input" placeholder="50" />
-            </label>
-            <label htmlFor="output">
-              <span>Output:</span>
-              <input type="text" name="output" id="output" placeholder="25" />
-            </label>
-          </form>
-          <div className="flex justify-between">
-            <button onClick={() => setOpenModalMovement(false)}>Salir</button>
-            <button>Enviar</button>
-          </div>
+}: ModalMovementProps) => (
+  <Modal
+    open={openModalMovement}
+    setOpen={setOpenModalMovement}
+    modalTitle="Agregar un movimiento"
+  >
+    <>
+      <div className="flex flex-col gap-5">
+        <form action="">
+          <label htmlFor="input">
+            <span>Input:</span>
+            <input type="text" name="input" id="input" placeholder="50" />
+          </label>
+          <label htmlFor="output">
+            <span>Output:</span>
+            <input type="text" name="output" id="output" placeholder="25" />
+          </label>
+        </form>
+        <div className="flex justify-between">
+          <button onClick={() => setOpenModalMovement(false)}>Salir</button>
+          <button>Enviar</button>
         </div>
-      </>
-    </Modal>
-  );
-}
+      </div>
+    </>
+  </Modal>
+);
 
 export default ModalMovement;
