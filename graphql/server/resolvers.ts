@@ -183,7 +183,6 @@ const resolvers: Resolver = {
           materialId: args.materialId,
         },
       });
-      console.log(newMovement);
       return newMovement;
     },
   },
