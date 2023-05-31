@@ -1,10 +1,16 @@
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Spinner from "@/components/spinner";
+import { useUser } from "@/hooks/useUser";
+import { Roles } from "@/types";
 
-export const AuthGuard = ({ children }: { children: JSX.Element }) => {
-  const { status } = useSession();
+interface AuthGuardProps {
+  children: JSX.Element;
+  roles?: Roles;
+}
+
+export const AuthGuard = ({ children, roles }: AuthGuardProps) => {
+  const { loading, status, userRole } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -13,9 +19,9 @@ export const AuthGuard = ({ children }: { children: JSX.Element }) => {
         router.push("/401");
       }
     }
-  }, [status, router]);
+  }, [loading, status, router]);
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="h-screen flex justify-center items-center">
         <Spinner />;
@@ -24,6 +30,9 @@ export const AuthGuard = ({ children }: { children: JSX.Element }) => {
   }
 
   if (status === "authenticated") {
+    if (roles && (!userRole || !roles.includes(userRole))) {
+      router.push("/403");
+    }
     return <>{children}</>;
   }
 

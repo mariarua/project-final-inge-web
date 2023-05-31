@@ -7,28 +7,12 @@ const resolvers: Resolver = {
       await context.db.role.findUnique({
         where: { id: parent.roleId },
       }),
-    createdAt: async (parent, args, context) => {
-      const date = new Date(parent.createdAt);
-      return {
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        day: date.getDate(),
-      };
-    },
   },
   Material: {
     movement: async (parent, args, context) =>
       await context.db.movement.findMany({
         where: { id: parent.materialId },
       }),
-    createdAt: async (parent, args, context) => {
-      const date = new Date(parent.createdAt);
-      return {
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        day: date.getDate(),
-      };
-    },
   },
   Query: {
     users: async (parent, args, context) => {
@@ -49,7 +33,6 @@ const resolvers: Resolver = {
         return null;
       }
     },
-
     materials: async (parent, args, context) => {
       const { db, session } = context;
       if (!session) {
@@ -57,13 +40,21 @@ const resolvers: Resolver = {
       }
       return await db.material.findMany();
     },
-
     material: async (parent, args, context) => {
       const { db, session } = context;
       if (!session) {
         return null;
       }
       return await db.material.findUnique({ where: { id: args.id } });
+    },
+    movements: async (parent, args, context) => {
+      const { db, session } = context;
+      if (!session) {
+        return null;
+      }
+      return await db.movement.findMany({
+        where: { materialId: args.material },
+      });
     },
     user: async (parent, args, context) => {
       const { db, session } = context;
@@ -72,6 +63,16 @@ const resolvers: Resolver = {
       }
       return await db.user.findUnique({
         where: { id: args.id },
+        include: { role: true },
+      });
+    },
+    userByEmail: async (parent, args, context) => {
+      const { db, session } = context;
+      if (!session) {
+        return null;
+      }
+      return await db.user.findUnique({
+        where: { email: args.email },
         include: { role: true },
       });
     },

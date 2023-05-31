@@ -1,66 +1,60 @@
 import Management from "@/components/management";
 import ModalMovement from "@/components/modals/ModalMovement";
-import { GET_NAME_MATERIALS } from "@/graphql/client/materials";
+import Spinner from "@/components/spinner";
+
+import { GET_MATERIALS_LIST } from "@/graphql/client/materials";
+import { GET_MOVEMENTS } from "@/graphql/client/movements";
 import { useQuery } from "@apollo/client";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { Material, Movement } from "@prisma/client";
+import { ChangeEvent, useState } from "react";
 
-const movement = [
-  { id: "QWERT1", createdAt: "01-05-2023", input: 100, output: null },
-  { id: "QWERT2", createdAt: "02-05-2023", input: null, output: 10 },
-  { id: "QWERT3", createdAt: "03-05-2023", input: null, output: 10 },
-  { id: "QWERT4", createdAt: "04-05-2023", input: null, output: 10 },
-  { id: "QWERT5", createdAt: "05-05-2023", input: null, output: 10 },
-  { id: "QWERT6", createdAt: "06-05-2023", input: null, output: 10 },
-  { id: "QWERT7", createdAt: "07-05-2023", input: null, output: 10 },
-  { id: "QWERT8", createdAt: "08-05-2023", input: null, output: 10 },
-  { id: "QWERT9", createdAt: "09-05-2023", input: null, output: 10 },
-  { id: "QWERT10", createdAt: "10-05-2023", input: null, output: 10 },
-  { id: "QWERT11", createdAt: "11-05-2023", input: null, output: 10 },
-];
-
-interface Material{
-  id: string,
-  name: string,
-}
-
-const Movement = () => {
-  
+const Movements = () => {
   const [openModalMovement, setOpenModalMovement] = useState<boolean>(false);
-  const { data, loading, error } = useQuery<{ materials: Material[] }>(GET_NAME_MATERIALS, {
-    fetchPolicy: 'cache-first',
+  const [selectedMaterialId, setSelectedMaterialId] = useState<string>();
+
+  const { data: materialsData } = useQuery<{
+    materials: Pick<Material, "id" | "name" | "price">[];
+  }>(GET_MATERIALS_LIST, {
+    fetchPolicy: "cache-first",
   });
-  const router = useRouter();
-  const { status } = useSession();
-  
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
 
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
+  const { data: movementsData, loading: movementsLoading } = useQuery<{
+    movements: Movement[];
+  }>(GET_MOVEMENTS, {
+    fetchPolicy: "cache-first",
+    variables: { material: selectedMaterialId || undefined },
+  });
 
-  if (error) return <p>Error materials</p>;
+  const handleMaterialChanged = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMaterialId(event.currentTarget.value);
+  };
 
-  if (loading) return <p>Loading...</p>;
-  
-  return(<>
-    <Management title="Gestión de inventarios">
-      <>
+  const currentMaterial =
+    selectedMaterialId &&
+    materialsData?.materials.find((item) => item.id === selectedMaterialId);
+
+  return (
+    <>
+      <Management title="Gestión de inventarios">
         <div className="flex justify-between">
-          <select name="select" id="select">
-            <option value="material_0" disabled selected>
-              Seleccionar material
-            </option>
-            {data?.materials.map((material) => (
+          <select
+            name="select"
+            id="select"
+            onChange={handleMaterialChanged}
+            placeholder="Seleccionar material"
+            defaultValue=""
+          >
+            <option value="">Todos los materiales</option>
+            {materialsData?.materials.map((material) => (
               <option key={`material_${material.id}`} value={material.id}>
                 {material.name}
               </option>
             ))}
           </select>
-          <button onClick={()=>(setOpenModalMovement(true))}>Agregar movimiento</button>
+          {currentMaterial && <div>SALDO: {currentMaterial.price}</div>}
+          <button onClick={() => setOpenModalMovement(true)}>
+            Agregar movimiento
+          </button>
         </div>
         <table>
           <thead>
@@ -72,10 +66,20 @@ const Movement = () => {
             </tr>
           </thead>
           <tbody>
-            {movement.map((movement) => (
+            {movementsLoading && (
+              <td colSpan={4} className="p-3">
+                <Spinner />
+              </td>
+            )}
+            {!movementsLoading && !movementsData?.movements.length && (
+              <td colSpan={4} className="p-5">
+                No hay información para mostrar
+              </td>
+            )}
+            {movementsData?.movements.map((movement) => (
               <tr key={movement.id}>
                 <td>{movement.id}</td>
-                <td>{movement.createdAt}</td>
+                <td>{new Date(movement.createdAt).toLocaleString("es-CO")}</td>
                 <td>{movement.input}</td>
                 <td>{movement.output}</td>
               </tr>
@@ -86,11 +90,14 @@ const Movement = () => {
           <div className="w-[83%]"></div>
           <span>Saldo: 25</span>
         </div>
-      </>
-    </Management>
-    <ModalMovement openModalMovement={openModalMovement} setOpenModalMovement={setOpenModalMovement}/>
-  </>);
+      </Management>
+      <ModalMovement
+        openModalMovement={openModalMovement}
+        setOpenModalMovement={setOpenModalMovement}
+      />
+    </>
+  );
 };
 
-Movement.requireAuth = true;
-export default Movement;
+Movements.requireAuth = true;
+export default Movements;
