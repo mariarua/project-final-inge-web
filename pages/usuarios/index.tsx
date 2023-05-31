@@ -1,21 +1,23 @@
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import Management from "@/components/management";
-import ModalUsers from "@/components/modals/ModalUsers";
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USERS } from "@/graphql/client/users";
 import { Role } from "@prisma/client";
 
+import Management from "@/components/management";
+import ModalUsers from "@/components/modals/ModalUsers";
+import Spinner from "@/components/spinner";
+
 interface User {
-  id: string,
+  id: string;
   createdAt: {
-    year: string,
-    month: string,
-    day: string,
+    year: string;
+    month: string;
+    day: string;
   };
-  email: string,
-  role: Role,
+  email: string;
+  role: Role;
 }
 
 const Users = () => {
@@ -27,7 +29,11 @@ const Users = () => {
   });
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
   }
 
   if (status === "unauthenticated") {
@@ -36,7 +42,12 @@ const Users = () => {
 
   if (error) return <p>Error users</p>;
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
 
   return (
     <>
@@ -57,7 +68,7 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.users.map((user) => (
+              {data?.users?.map((user) => (
                 <tr key={user.id}>
                   <td>{user.id}</td>
                   <td>{`${user.createdAt.year}-${user.createdAt.month}-${user.createdAt.day}`}</td>

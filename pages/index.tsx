@@ -1,18 +1,24 @@
-import Login from "@/pages/login";
 import Head from "next/head";
+import Spinner from "@/components/spinner";
+
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Login from "@/pages/login";
 
 const Home = () => {
   const router = useRouter();
   const { status } = useSession();
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
   }
 
-  if (status === "unauthenticated") {
-    router.push("/login");
+  if (status === "authenticated") {
+    router.push("/inventario");
   }
 
   return (

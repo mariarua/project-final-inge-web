@@ -1,32 +1,41 @@
 import Management from "@/components/management";
 import ModalMaterials from "@/components/modals/ModalMaterials";
+import Spinner from "@/components/spinner";
+
 import { GET_MATERIALS } from "@/graphql/client/materials";
 import { useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-interface Material{
-  id: string,
-  createdAt:{
-    year: string,
-    month: string,
-    day: string
-  },
-  name: string,
-  price: number,
+interface Material {
+  id: string;
+  createdAt: {
+    year: string;
+    month: string;
+    day: string;
+  };
+  name: string;
+  price: number;
 }
 
 const Materials = () => {
   const [openModalMaterials, setOpenModalMaterials] = useState<boolean>(false);
-  const { data, loading, error } = useQuery<{ materials: Material[] }>(GET_MATERIALS, {
-    fetchPolicy: 'cache-first',
-  });
+  const { data, loading, error } = useQuery<{ materials: Material[] }>(
+    GET_MATERIALS,
+    {
+      fetchPolicy: "cache-first",
+    }
+  );
   const router = useRouter();
   const { status } = useSession();
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
   }
 
   if (status === "unauthenticated") {
@@ -35,13 +44,20 @@ const Materials = () => {
 
   if (error) return <p>Error materials</p>;
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Spinner />;
+      </div>
+    );
   return (
     <>
       <Management title="Gestión de materiales">
         <>
           <div className="flex justify-end">
-            <button onClick={() => (setOpenModalMaterials(true))}>Agregar material</button>
+            <button onClick={() => setOpenModalMaterials(true)}>
+              Agregar material
+            </button>
           </div>
           <table className="table-auto">
             <thead>
@@ -65,7 +81,10 @@ const Materials = () => {
           </table>
         </>
       </Management>
-      <ModalMaterials openModalMaterials={openModalMaterials} setOpenModalMaterials={setOpenModalMaterials}/>
+      <ModalMaterials
+        openModalMaterials={openModalMaterials}
+        setOpenModalMaterials={setOpenModalMaterials}
+      />
     </>
   );
 };
