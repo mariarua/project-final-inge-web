@@ -10,7 +10,7 @@ const Error403 = () => (
         No esta autorizado para ver esta página
       </h6>
       <Link
-        href="/"
+        href="/inventario"
         className="m-2 mb-5 w-full rounded-lg border-[1px] border-solid border-black bg-black p-2 text-center uppercase tracking-[0.25em] text-white first-letter:rounded-lg hover:bg-white hover:text-black"
       >
         Volver a la home
