@@ -75,14 +75,18 @@ const Movements = () => {
           </thead>
           <tbody>
             {movementsLoading && (
-              <td colSpan={4} className="p-3">
-                <Spinner />
-              </td>
+              <tr>
+                <td colSpan={4} className="p-3">
+                  <Spinner />
+                </td>
+              </tr>
             )}
             {!movementsLoading && !movementsData?.movements.length && (
-              <td colSpan={4} className="p-5">
-                No hay información para mostrar
-              </td>
+              <tr>
+                <td colSpan={4} className="p-5">
+                  No hay información para mostrar
+                </td>
+              </tr>
             )}
             {movementsData?.movements.map((movement) => (
               <tr key={movement.id}>

@@ -37,6 +37,10 @@
     @apply bg-transparent text-black text-[14px] py-[18px] px-[32.5px] border border-black;
   }
 
+  label > select{
+    @apply bg-transparent text-black text-[14px] py-[18px] px-[32.5px] border border-black w-[220px] rounded-md;
+  }
+
   table {
     @apply w-full text-sm text-left text-black outline -outline-offset-1 outline-slate-800 overflow-hidden rounded-xl;
   }
