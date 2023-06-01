@@ -11,10 +11,14 @@ import { useState } from "react";
 const Materials = () => {
   const [openModalMaterials, setOpenModalMaterials] = useState<boolean>(false);
 
-  const { data: materialsData, loading: materialsLoading } = useQuery<{
+  const {
+    data: materialsData,
+    loading: materialsLoading,
+    refetch,
+  } = useQuery<{
     materials: Material[];
   }>(GET_MATERIALS, {
-    fetchPolicy: "cache-first",
+    fetchPolicy: "network-only",
   });
 
   return (
@@ -22,7 +26,10 @@ const Materials = () => {
       <Management title="Gestión de materiales">
         <div className="flex justify-end">
           <PrivateComponent roles={["ADMIN"]}>
-            <button onClick={() => setOpenModalMaterials(true)}>
+            <button
+              className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
+              onClick={() => setOpenModalMaterials(true)}
+            >
               Agregar material
             </button>
           </PrivateComponent>
@@ -38,9 +45,12 @@ const Materials = () => {
           </thead>
           <tbody>
             {materialsLoading && (
+              <tr>
               <td colSpan={4} className="p-3">
                 <Spinner />
               </td>
+
+              </tr>
             )}
             {materialsData?.materials.map((material) => (
               <tr key={material.id}>
@@ -56,6 +66,7 @@ const Materials = () => {
       <ModalMaterials
         openModalMaterials={openModalMaterials}
         setOpenModalMaterials={setOpenModalMaterials}
+        onAdded={() => refetch()}
       />
     </>
   );

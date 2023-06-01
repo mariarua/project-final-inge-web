@@ -11,4 +11,13 @@ const GET_MOVEMENTS = gql`
   }
 `;
 
-export { GET_MOVEMENTS };
+const CREATE_MOVEMENT = gql`
+mutation Mutation($materialId: String!, $output: Int, $input: Int) {
+  createMovement(materialId: $materialId, output: $output, input: $input) {
+    id
+    input
+    output
+  }
+}
+`;
+export { GET_MOVEMENTS, CREATE_MOVEMENT };

@@ -8,7 +8,6 @@
   }
 
   select {
-    background-image: url(/arrow.svg); /*aquí deberás escribir la ruta de la imagen que utilizarás como flecha del desplegable*/
     background-size: 25px;
     background-repeat: no-repeat;
     background-position: right center;
@@ -16,7 +15,7 @@
     -moz-appearance: none;
     -o-appearance: none;
     appearance: none;
-    }
+  }
 }
 
 @layer components {
@@ -34,34 +33,37 @@
     @apply bg-transparent hover:bg-gray-400 text-black text-[14px] py-[18px] px-[32.5px] border border-black;
   }
 
-  select{
+  select {
     @apply bg-transparent text-black text-[14px] py-[18px] px-[32.5px] border border-black;
   }
-  
+
+  label > select{
+    @apply bg-transparent text-black text-[14px] py-[18px] px-[32.5px] border border-black w-[220px] rounded-md;
+  }
 
   table {
-    @apply w-full text-sm text-left text-black border;
+    @apply w-full text-sm text-left text-black outline -outline-offset-1 outline-slate-800 overflow-hidden rounded-xl;
   }
 
   thead {
-    @apply text-xs text-white uppercase bg-gray-500;
+    @apply text-xs text-white uppercase tracking-[0.3em] bg-slate-800;
   }
 
   th,
   td {
-    @apply px-6 py-3;
+    @apply px-6 py-3 text-gray-700 table-cell text-center;
   }
 
-  tbody > tr:nth-child(2n) {
-    @apply bg-gray;
+  th {
+    @apply text-white border border-slate-800;
   }
 
-  form{
+  form {
     @apply flex flex-col gap-3;
   }
 
   label {
-    @apply flex items-center gap-4 justify-between
+    @apply flex items-center gap-4 justify-between;
   }
 
   label > span {

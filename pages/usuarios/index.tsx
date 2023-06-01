@@ -19,7 +19,10 @@ const Users = () => {
     <>
       <Management title="Gestión de usuarios">
         <div className="flex justify-end">
-          <button onClick={() => setOpenModalUsers(true)}>
+          <button
+            className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
+            onClick={() => setOpenModalUsers(true)}
+          >
             Editar usuario
           </button>
         </div>
@@ -34,9 +37,11 @@ const Users = () => {
           </thead>
           <tbody>
             {usersLoading && (
-              <td colSpan={4} className="p-3">
-                <Spinner />
-              </td>
+              <tr>
+                <td colSpan={4} className="p-3">
+                  <Spinner />
+                </td>
+              </tr>
             )}
             {usersData?.users?.map((user) => (
               <tr key={user.id}>

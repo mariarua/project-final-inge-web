@@ -8,8 +8,8 @@ export const Sidebar = () => {
   const { data } = useSession();
 
   return (
-    <div className="flex bg-gray w-5/12 min-h-screen">
-      <aside className="w-full shadow-sm shadow-gray-600">
+    <div className="flex bg-gray w-[350px] shadow-sm shadow-gray-600">
+      <aside className="flex-1 h-screen sticky top-0">
         <div className="flex flex-col mx-auto items-center gap-1 my-8">
           <Image
             className="clip-circle rounded-full"
@@ -21,7 +21,10 @@ export const Sidebar = () => {
           <span className="font-thin text-gray-800 tracking-[0.3em] pt-2">
             {data?.user?.name}
           </span>
-          <IoIosLogOut onClick={() => signOut()} className="mb-2" />
+          <IoIosLogOut
+            onClick={() => signOut()}
+            className="mb-2 cursor-pointer"
+          />
         </div>
         <div className="w-full flex">
           <nav className="w-full">
@@ -51,7 +54,7 @@ export const Sidebar = () => {
                     className="flex p-5 w-full"
                     activeClassName="bg-slate-800 text-white"
                   >
-                    Usuario
+                    Usuarios
                   </Link>
                 </li>
               </PrivateComponent>
