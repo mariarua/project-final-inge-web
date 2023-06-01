@@ -37,9 +37,11 @@ const Users = () => {
           </thead>
           <tbody>
             {usersLoading && (
-              <td colSpan={4} className="p-3">
-                <Spinner />
-              </td>
+              <tr>
+                <td colSpan={4} className="p-3">
+                  <Spinner />
+                </td>
+              </tr>
             )}
             {usersData?.users?.map((user) => (
               <tr key={user.id}>

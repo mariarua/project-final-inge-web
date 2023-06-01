@@ -54,7 +54,6 @@ const ModalMovement = ({
       toast.error("Error al crear el movimiento");
     }
   };
-  console.log(formData);
   
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>

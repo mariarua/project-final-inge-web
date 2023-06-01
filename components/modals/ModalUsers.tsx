@@ -1,17 +1,55 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import Modal from "./Modal";
 import Spinner from "@/components/spinner";
 import { Role, User } from "@prisma/client";
-import { useQuery } from "@apollo/client";
-import { GET_EMAIL_USERS } from "@/graphql/client/users";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_EMAIL_USERS, UPDATE_ROLE } from "@/graphql/client/users";
 import { GET_ROLES } from "@/graphql/client/roles";
+import { toast } from "react-toastify";
 
 interface ModalUsersProps {
   openModalUsers: boolean;
   setOpenModalUsers: Dispatch<SetStateAction<boolean>>;
 }
 
+interface FormData {
+  roleId: string;
+  updateRoleId: string;
+}
+
+const initialFormData: FormData = {
+  roleId: "",
+  updateRoleId: "",
+};
+
 const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [updateRole, { loading: loadingMutation }] = useMutation(UPDATE_ROLE);
+
+  const handleSubmit = async () => {
+    const { roleId, updateRoleId } = formData;
+    try {
+      const { data } = await updateRole({
+        variables: {
+          roleId,
+          updateRoleId,
+        },
+      });
+      toast.success("Rol actualizado con éxito");
+
+      setFormData(initialFormData);
+      setOpenModalUsers(false);
+    } catch (error) {
+      toast.error("Error al actualizar el rol del usuario");
+    }
+  };
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const { data, loading, error } = useQuery<{ users: User[] }>(
     GET_EMAIL_USERS,
     {
@@ -43,6 +81,11 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
         <Spinner />;
       </div>
     );
+
+    const handleClose = () => {
+    setOpenModalUsers(false);
+    setFormData(initialFormData);
+  };
   return (
     <Modal
       open={openModalUsers}
@@ -50,13 +93,9 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
       modalTitle="Editar un Usuario"
     >
       <>
-        <div className="flex flex-col gap-5 w-600">
-          <form action="">
-            <select
-              name="select"
-              id="select"
-              className="text-gray-800 tracking-[0.3em] rounded-lg"
-            >
+        <div className="flex flex-col gap-5 w-60">
+          <form>
+            <select name="updateRoleId" id="updateRoleId" onChange={handleChange} defaultValue="usuario_0">
               <option value="usuario_0" disabled>
                 Seleccionar usuario
               </option>
@@ -66,12 +105,8 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
                 </option>
               ))}
             </select>
-            <select
-              name="select"
-              id="select"
-              className="text-gray-800 tracking-[0.3em] rounded-lg"
-            >
-              <option value="material_0" disabled>
+            <select name="roleId" id="roleId" onChange={handleChange} defaultValue="role_0">
+              <option value="role_0" disabled>
                 Seleccionar rol
               </option>
               {dataRole?.roles?.map((role) => (
@@ -82,15 +117,10 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
             </select>
           </form>
           <div className="flex justify-between">
-            <button
-              className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
-              onClick={() => setOpenModalUsers(false)}
-            >
-              Salir
-            </button>
-            <button className="bg-slate-800 text-white border-slate-800 tracking-[0.2em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800">
-              Enviar
-            </button>
+          <button onClick={() => handleClose()}>Salir</button>
+          <button disabled={loadingMutation} onClick={handleSubmit}>
+            Enviar
+          </button>
           </div>
         </div>
       </>
