@@ -61,7 +61,7 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role?      @relation(fields: [roleId], references: [id])
-  roleId        String?
+  roleId        String?     @default("cli1eqjx90002udt8b59f6lhr")
   material      Material[]
   movement      Movement[]
   accounts      Account[]
