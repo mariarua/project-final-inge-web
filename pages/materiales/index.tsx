@@ -22,7 +22,10 @@ const Materials = () => {
       <Management title="Gestión de materiales">
         <div className="flex justify-end">
           <PrivateComponent roles={["ADMIN"]}>
-            <button onClick={() => setOpenModalMaterials(true)}>
+            <button
+              className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
+              onClick={() => setOpenModalMaterials(true)}
+            >
               Agregar material
             </button>
           </PrivateComponent>
