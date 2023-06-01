@@ -43,6 +43,7 @@ const Movements = () => {
             onChange={handleMaterialChanged}
             placeholder="Seleccionar material"
             defaultValue=""
+            className="bg-slate-800 text-white uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
           >
             <option value="">Todos los materiales</option>
             {materialsData?.materials.map((material) => (
@@ -51,12 +52,19 @@ const Movements = () => {
               </option>
             ))}
           </select>
-          {currentMaterial && <div>SALDO: {currentMaterial.price}</div>}
-          <button onClick={() => setOpenModalMovement(true)}>
+          {currentMaterial && (
+            <div className="uppercase tracking-[0.3em] text-slate-800 text-xl flex place-items-end">
+              <span>SALDO: {currentMaterial.price}</span>
+            </div>
+          )}
+          <button
+            className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg active:bg-white active:border-slate-800 active:text-slate-800"
+            onClick={() => setOpenModalMovement(true)}
+          >
             Agregar movimiento
           </button>
         </div>
-        <table>
+        <table className="rounded-xl">
           <thead>
             <tr>
               <th>Identificador</th>
@@ -86,10 +94,6 @@ const Movements = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex">
-          <div className="w-[83%]"></div>
-          <span>Saldo: 25</span>
-        </div>
       </Management>
       <ModalMovement
         openModalMovement={openModalMovement}

@@ -19,7 +19,10 @@ const Users = () => {
     <>
       <Management title="Gestión de usuarios">
         <div className="flex justify-end">
-          <button onClick={() => setOpenModalUsers(true)}>
+          <button
+            className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
+            onClick={() => setOpenModalUsers(true)}
+          >
             Editar usuario
           </button>
         </div>

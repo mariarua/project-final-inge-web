@@ -50,9 +50,13 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
       modalTitle="Editar un Usuario"
     >
       <>
-        <div className="flex flex-col gap-5 w-60">
+        <div className="flex flex-col gap-5 w-600">
           <form action="">
-            <select name="select" id="select">
+            <select
+              name="select"
+              id="select"
+              className="text-gray-800 tracking-[0.3em] rounded-lg"
+            >
               <option value="usuario_0" disabled>
                 Seleccionar usuario
               </option>
@@ -62,7 +66,11 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
                 </option>
               ))}
             </select>
-            <select name="select" id="select">
+            <select
+              name="select"
+              id="select"
+              className="text-gray-800 tracking-[0.3em] rounded-lg"
+            >
               <option value="material_0" disabled>
                 Seleccionar rol
               </option>
@@ -74,8 +82,15 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
             </select>
           </form>
           <div className="flex justify-between">
-            <button onClick={() => setOpenModalUsers(false)}>Salir</button>
-            <button>Enviar</button>
+            <button
+              className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
+              onClick={() => setOpenModalUsers(false)}
+            >
+              Salir
+            </button>
+            <button className="bg-slate-800 text-white border-slate-800 tracking-[0.2em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800">
+              Enviar
+            </button>
           </div>
         </div>
       </>
