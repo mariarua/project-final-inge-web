@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Modal from "./Modal";
 import { useMutation } from "@apollo/client";
-import { CREATE_MATERIAL } from "@/graphql/client/materials";
+import { CREATE_MATERIAL, GET_MATERIALS } from "@/graphql/client/materials";
 import { toast } from "react-toastify";
 
 interface ModalMaterialsProps {
@@ -25,7 +25,9 @@ const ModalMaterials = ({
 }: ModalMaterialsProps) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  const [createMaterial, { loading }] = useMutation(CREATE_MATERIAL);
+  const [createMaterial, { loading }] = useMutation(CREATE_MATERIAL, {
+    refetchQueries: [GET_MATERIALS],
+  });
 
   const handleSubmit = async () => {
     const { name, price } = formData;
