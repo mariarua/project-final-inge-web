@@ -54,7 +54,7 @@ export const Sidebar = () => {
                     className="flex p-5 w-full"
                     activeClassName="bg-slate-800 text-white"
                   >
-                    Usuario
+                    Usuarios
                   </Link>
                 </li>
               </PrivateComponent>
