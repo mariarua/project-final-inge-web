@@ -13,6 +13,7 @@ export const authOptions: NextAuthOptions = {
       issuer: process.env.AUTH0_ISSUER ?? "",
     }),
   ],
+  secret: process.env.SECRET,
 };
 
 const auth = async (req: NextApiRequest, res: NextApiResponse) =>
