@@ -11,7 +11,11 @@ import { useState } from "react";
 const Materials = () => {
   const [openModalMaterials, setOpenModalMaterials] = useState<boolean>(false);
 
-  const { data: materialsData, loading: materialsLoading } = useQuery<{
+  const {
+    data: materialsData,
+    loading: materialsLoading,
+    refetch,
+  } = useQuery<{
     materials: Material[];
   }>(GET_MATERIALS, {
     fetchPolicy: "network-only",
@@ -59,6 +63,7 @@ const Materials = () => {
       <ModalMaterials
         openModalMaterials={openModalMaterials}
         setOpenModalMaterials={setOpenModalMaterials}
+        onAdded={() => refetch()}
       />
     </>
   );

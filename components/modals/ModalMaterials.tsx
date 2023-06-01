@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 interface ModalMaterialsProps {
   openModalMaterials: boolean;
   setOpenModalMaterials: Dispatch<SetStateAction<boolean>>;
+  onAdded: () => void;
 }
 
 interface FormData {
@@ -22,6 +23,7 @@ const initialFormData: FormData = {
 const ModalMaterials = ({
   openModalMaterials,
   setOpenModalMaterials,
+  onAdded,
 }: ModalMaterialsProps) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
@@ -40,6 +42,7 @@ const ModalMaterials = ({
       toast.success(`${material.name} creado con éxito`);
 
       setFormData(initialFormData);
+      onAdded();
       setOpenModalMaterials(false);
     } catch (error) {
       toast.error("Error al crear el material");
