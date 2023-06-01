@@ -29,7 +29,7 @@ const ModalUsers = ({ openModalUsers, setOpenModalUsers }: ModalUsersProps) => {
   const handleSubmit = async () => {
     const { roleId, updateRoleId } = formData;
     try {
-      const { data } = await updateRole({
+      await updateRole({
         variables: {
           roleId,
           updateRoleId,

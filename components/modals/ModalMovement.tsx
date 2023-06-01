@@ -5,7 +5,6 @@ import { CREATE_MOVEMENT } from "@/graphql/client/movements";
 import { Material } from "@prisma/client";
 import { GET_MATERIALS_LIST } from "@/graphql/client/materials";
 import { toast } from "react-toastify";
-import { log } from "console";
 import { useUserContext } from "@/context/UserContext";
 
 
@@ -38,7 +37,7 @@ const ModalMovement = ({
   const handleSubmit = async () => {
     const { materialId, input, output, userId} = formData;
     try {
-      const { data } = await createMovement({
+      await createMovement({
         variables: {
           materialId,
           input: Number(input),
