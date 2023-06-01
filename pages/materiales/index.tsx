@@ -38,9 +38,12 @@ const Materials = () => {
           </thead>
           <tbody>
             {materialsLoading && (
+              <tr>
               <td colSpan={4} className="p-3">
                 <Spinner />
               </td>
+
+              </tr>
             )}
             {materialsData?.materials.map((material) => (
               <tr key={material.id}>
