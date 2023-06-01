@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import Dialog from '@mui/material/Dialog';
-import { DialogContent, DialogTitle } from '@mui/material';
+import React, { Dispatch, SetStateAction } from "react";
+import Dialog from "@mui/material/Dialog";
+import { DialogContent, DialogTitle } from "@mui/material";
 
 interface ModalProps {
   open: boolean;
@@ -9,13 +9,13 @@ interface ModalProps {
   children: JSX.Element;
 }
 
-const Modal = ({ open, setOpen, modalTitle, children }: ModalProps) => {
-  return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>{modalTitle}</DialogTitle>
-      <DialogContent>{children}</DialogContent>
-    </Dialog>
-  );
-};
+const Modal = ({ open, setOpen, modalTitle, children }: ModalProps) => (
+  <Dialog open={open} onClose={() => setOpen(false)}>
+    <DialogTitle className="uppercase font-thin text-gray-700 tracking-[0.3em]">
+      {modalTitle}
+    </DialogTitle>
+    <DialogContent>{children}</DialogContent>
+  </Dialog>
+);
 
 export default Modal;

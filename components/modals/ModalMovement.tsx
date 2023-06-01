@@ -105,6 +105,7 @@ const ModalMovement = ({
             </select>
           </label>
           <label htmlFor="input">
+
             <span>Input:</span>
             <input
               type="number"
@@ -134,6 +135,7 @@ const ModalMovement = ({
         <div className="flex justify-between">
           <button onClick={() => handleClose()}>Salir</button>
           <button disabled={loading} onClick={handleSubmit}>
+
             Enviar
           </button>
         </div>

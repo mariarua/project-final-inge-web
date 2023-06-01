@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 interface ModalMaterialsProps {
   openModalMaterials: boolean;
   setOpenModalMaterials: Dispatch<SetStateAction<boolean>>;
+  onAdded: () => void;
 }
 
 interface FormData {
@@ -22,6 +23,7 @@ const initialFormData: FormData = {
 const ModalMaterials = ({
   openModalMaterials,
   setOpenModalMaterials,
+  onAdded,
 }: ModalMaterialsProps) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
@@ -40,6 +42,7 @@ const ModalMaterials = ({
       toast.success(`${material.name} creado con éxito`);
 
       setFormData(initialFormData);
+      onAdded();
       setOpenModalMaterials(false);
     } catch (error) {
       toast.error("Error al crear el material");
@@ -52,7 +55,6 @@ const ModalMaterials = ({
       [e.target.name]: e.target.value,
     }));
   };
-
   return (
     <Modal
       open={openModalMaterials}
@@ -60,11 +62,12 @@ const ModalMaterials = ({
       modalTitle="Agregar un material"
     >
       <>
-        <div className="flex flex-col gap-5">
-          <form>
+        <div className="flex flex-col gap-5 w-600">
+          <form action="">
             <label htmlFor="name">
-              <span>Nombre:</span>
+              <span className="text-gray-700 tracking-[0.3em]">Nombre:</span>
               <input
+                className="text-gray-700 tracking-[0.3em]"
                 type="text"
                 name="name"
                 id="name"
@@ -74,8 +77,9 @@ const ModalMaterials = ({
               />
             </label>
             <label htmlFor="price">
-              <span>Saldo:</span>
+              <span className="text-gray-700 tracking-[0.3em]">Saldo:</span>
               <input
+                className="text-gray-700 tracking-[0.3em]"
                 type="number"
                 min={0}
                 step={1}
@@ -89,12 +93,17 @@ const ModalMaterials = ({
           </form>
           <div className="flex justify-between">
             <button
-              disabled={loading}
+              className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
               onClick={() => setOpenModalMaterials(false)}
+              disabled={loading}
             >
               Salir
             </button>
-            <button disabled={loading} onClick={handleSubmit}>
+            <button
+              disabled={loading}
+              onClick={handleSubmit}
+              className="bg-slate-800 text-white border-slate-800 uppercase tracking-[0.3em] rounded-lg hover:bg-white hover:border-slate-800 hover:text-slate-800"
+            >
               Enviar
             </button>
           </div>
